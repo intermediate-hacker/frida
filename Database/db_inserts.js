@@ -16,13 +16,21 @@ const getPromisifiedDB = (dbName) => {
 	return db;
 };
 
+const destroyDatabases = async () => {
+	await nano.db.destroyAsync('author');
+	await nano.db.destroyAsync('institution');
+}
+
+const createDatabases = async () => {
+	await nano.db.createAsync('author');
+	await nano.db.createAsync('institution');
+	await nano.db.createAsync('paper');
+}
+
 const recreateDatabases = async () => {
 	try {
-		await nano.db.destroyAsync('author');
-		await nano.db.destroyAsync('institution');
-
-		await nano.db.createAsync('author');
-		await nano.db.createAsync('institution');
+		await destroyDatabases();
+		await createDatabases();
 	} catch (err) {
 		console.log(`[database][recreateDatabases]: ${err}`);
 	}
@@ -65,7 +73,7 @@ const setInstitutionOfAuthor = async (authorID, institutionID) => {
 		authorDoc['institutionID'] = institutionID;
 
 		const authorDocInserted = await author.insertAsync(authorDoc);
-		// console.log(`[database][])
+		console.log(`[database][setInstitutionOfAuthor]: ${authorDoc}`);
 
 	} catch (err) {
 		console.log(`[database][setInstitutionOfAuthor]: ${err}`);
@@ -79,8 +87,7 @@ const setInstitutionOfAuthor = async (authorID, institutionID) => {
   * @returns {string} identifier of the database record.
   */
 const insertInstitution = async (name, campus) => {
-	const institution = nano.db.use('institution');
-	bluebird.promisifyAll(institution);
+	const institution = getPromisifiedDB('institution');
 
 	const sha1Hash = crypto.createHash('sha1').update(`${name}${campus}`).digest('hex');
 
@@ -102,7 +109,18 @@ const insertInstitution = async (name, campus) => {
   * @param {Date} publicationDate the date on which the paper was published (in a journal etc.).
   */
 const insertPaper = async (title, url, authorID, publicationDate) => {
-	
+	const paper = getPromisifiedDB('paper');
+
+	const sha1Hash = crypto.createHash('sha1').update(`${title}${url}${authorID}`);
+
+	try {
+		const body = paper.insertAsync({ title: title, url: url, authorID: authorID, publicationDate: publicationDate.toString()});
+		console.log(`[database][insertPaper]: ${sha1Hash} inserted`);
+		console.log(body);
+		return sha1Hash;
+	} catch (err) {
+		console.log(`[database][insertPaper]: ${err.message}`);
+	}
 };
 
 const mainFunc = async () => {
@@ -112,6 +130,8 @@ const mainFunc = async () => {
 
 	const authorID = await insertAuthor('Judith', 'Butler');
 	await setInstitutionOfAuthor(authorID, institutionID);
+
+	const paperID = await insertPaper('Frames of War: When is life grievable?', 'https://www.versobooks.com/books/2148-frames-of-war', authorID, new Date(2009));
 }
 
 mainFunc();
