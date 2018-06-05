@@ -19,6 +19,7 @@ const getPromisifiedDB = (dbName) => {
 const destroyDatabases = async () => {
 	await nano.db.destroyAsync('author');
 	await nano.db.destroyAsync('institution');
+	await nano.db.destroyAsync('paper');
 }
 
 const createDatabases = async () => {
@@ -131,7 +132,7 @@ const mainFunc = async () => {
 	const authorID = await insertAuthor('Judith', 'Butler');
 	await setInstitutionOfAuthor(authorID, institutionID);
 
-	const paperID = await insertPaper('Frames of War: When is life grievable?', 'https://www.versobooks.com/books/2148-frames-of-war', authorID, new Date(2009));
+	const paperID = await insertPaper('Frames of War: When is life grievable?', 'https://www.versobooks.com/books/2148-frames-of-war', authorID, new Date(2009, 1, 1, 1, 1, 1, 1));
 }
 
 mainFunc();
