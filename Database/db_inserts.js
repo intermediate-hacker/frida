@@ -26,6 +26,11 @@ const createDatabases = async () => {
 	await nano.db.createAsync('author');
 	await nano.db.createAsync('institution');
 	await nano.db.createAsync('paper');
+
+	const paper = getPromisifiedDB('paper');
+	await paper.insertAsync({
+		queue : []
+	}, 'recent');
 }
 
 const recreateDatabases = async () => {
@@ -112,12 +117,27 @@ const insertInstitution = async (name, campus) => {
 const insertPaper = async (title, url, authorID, publicationDate) => {
 	const paper = getPromisifiedDB('paper');
 
-	const sha1Hash = crypto.createHash('sha1').update(`${title}${url}${authorID}`);
+	const sha1Hash = crypto.createHash('sha1').update(`${title}${url}${authorID}`).digest('hex');
 
 	try {
-		const body = paper.insertAsync({ title: title, url: url, authorID: authorID, publicationDate: publicationDate.toString()});
+		const body = await paper.insertAsync({ 
+			title: title, 
+			url: url, 
+			authorID: authorID, 
+			publicationDate: publicationDate.toString()
+		}, sha1Hash);
+
 		console.log(`[database][insertPaper]: ${sha1Hash} inserted`);
-		console.log(body);
+		
+		const recentPapersDoc = await paper.getAsync('recent');
+		recentPapersDoc['queue'].push(sha1Hash);
+
+		if (recentPapersDoc['queue'].length > 5) {
+			recentPapersDoc['queue'].splice(0, 1);
+		}
+
+		await paper.insertAsync(recentPapersDoc);
+
 		return sha1Hash;
 	} catch (err) {
 		console.log(`[database][insertPaper]: ${err.message}`);
@@ -135,4 +155,12 @@ const mainFunc = async () => {
 	const paperID = await insertPaper('Frames of War: When is life grievable?', 'https://www.versobooks.com/books/2148-frames-of-war', authorID, new Date(2009, 1, 1, 1, 1, 1, 1));
 }
 
-mainFunc();
+module.exports = { 
+	getPromisifiedDB,
+	insertAuthor,
+	setInstitutionOfAuthor,
+	insertInstitution,
+	insertPaper
+};
+
+// mainFunc();

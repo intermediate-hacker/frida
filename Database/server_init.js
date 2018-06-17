@@ -1,3 +1,9 @@
+/** @file Contains initialization code for the server.
+  * The server I use is Express (4.0x) combined with
+  * WebSockets via socket.io.
+  * @author Muhammad Tirmazi
+  */
+
 const express = require('express');
 const expressApp = express();
 const http = require('http');
@@ -11,16 +17,21 @@ const https = require('https');
 // 	return username === 'admin' &&  password === 'tirmazi';
 // };
 
-const initializeServerSSL = () => {
-	const privateKey = fs.readFileSync('server.key');
-	const certificate = fs.readFileSync('server.crt');
+// const initializeServerSSL = () => {
+// 	const privateKey = fs.readFileSync('server.key');
+// 	const certificate = fs.readFileSync('server.crt');
 
-	const credentials = { key: privateKey, cert: certificate };
-	return https.createServer(credentials, expressApp);
-};
+// 	const credentials = { key: privateKey, cert: certificate };
+// 	return https.createServer(credentials, expressApp);
+// };
 
-const httpsServer = initializeServerSSL();
+// const httpsServer = initializeServerSSL();
 
+/**
+  * Creates the HTTP server along with all the paths. 
+  * Also creates a static server that forwards all files
+  * in the directory called 'public'.
+  */
 const initializeServer = () => {
 	const staticAuth = basicAuth({
 		users : {
@@ -29,13 +40,10 @@ const initializeServer = () => {
 		challenge : true
 	});
 
+	expressApp.use(express.static('public'));
+
 	expressApp.get('/', (req, res) => {
 		res.sendFile(__dirname + '/index.html');
-	});
-
-	expressApp.get('/upload', staticAuth, (req, res) => {
-		res.sendFile(__dirname + '/upload.html');
-		// res.status(200).send('You passed');
 	});
 
 	httpServer.listen(80, () => {
