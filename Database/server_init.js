@@ -12,47 +12,40 @@ const basicAuth = require('express-basic-auth');
 const fs = require('fs');
 const https = require('https');
 
-// const customAuthorization = (username, password) => {
-// 	console.log('Custom Authorization Happening.');
-// 	return username === 'admin' &&  password === 'tirmazi';
-// };
-
-// const initializeServerSSL = () => {
-// 	const privateKey = fs.readFileSync('server.key');
-// 	const certificate = fs.readFileSync('server.crt');
-
-// 	const credentials = { key: privateKey, cert: certificate };
-// 	return https.createServer(credentials, expressApp);
-// };
-
-// const httpsServer = initializeServerSSL();
+const serverForm = require('./server_form');
+const serverDatabaseBrowse = require('./server_db_browse');
+const serverRoute = require('./server_route');
+const serverWebSockets = require('./server_web_sockets');
 
 /**
   * Creates the HTTP server along with all the paths. 
   * Also creates a static server that forwards all files
   * in the directory called 'public'.
   */
-const initializeServer = () => {
-	const staticAuth = basicAuth({
-		users : {
-			'tirmazi' : 'tirmazi'
-		},
-		challenge : true
-	});
-
+const initializeServer = async () => {
 	expressApp.use(express.static('public'));
 
-	expressApp.get('/', (req, res) => {
-		res.sendFile(__dirname + '/index.html');
-	});
+	console.log("Routing pages");
+	serverRoute.serverRoutePages(expressApp);
+
+
+
+	try {
+		console.log("Adding Form Listeners");
+		await serverForm.serverAddFormListeners(expressApp);
+
+		console.log("Adding database browsing handlers");		
+		await serverDatabaseBrowse.serverAddDatabaseBrowseListeners(expressApp);
+
+		console.log("Adding web socket handlers");
+		await serverWebSockets.serverAddWebSocketHandlers(httpServer);
+	} catch (err) {
+		console.log(err);
+	}
 
 	httpServer.listen(80, () => {
 		console.log('HTTP Server Listening on: *:80');
 	});
-
-	// httpsServer.listen(443, () => {
-	// 	console.log('HTTPS Server Listening on: *:443');
-	// });
 };
 
 initializeServer();

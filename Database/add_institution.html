@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SWGI Database</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+  <!-- my scripts -->
+  <script type="text/javascript" src="tooltip_helper.js"></script>
+  <script type="text/javascript" src="menu_boilerplate_gen.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid">
+	    <div class="alert alert-info alert-dismissible fade show" role="alert">
+	    	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	    	<button class="btn btn-sm btn-outline-primary" onclick="window.open('/contribute', '_self');">Add Paper</button>
+	  		<button class="btn btn-sm btn-outline-primary" onclick="window.open('/add_author', '_self');">Add Author</button>
+	  		<button class="btn btn-sm btn-outline-primary" onclick="window.open('/add_institution', '_self');">Add Institution</button>
+		</div>
+
+		<div class="card">
+			<div class="card-header text-primary" style="background-color: #e3f2fd;"">
+				Add Institution to Database
+			</div>
+			<form action="/add_institution" method="post">
+				<div class="form-group">
+					<label for="formUsername">Your Credentials:</label>
+					<div class="row">
+						<div class="col-3">
+							<input type="text" class="form-control" name="formUsername" placeholder="username" required>
+						</div>
+						<div class="col-3">
+							<input type="password" class="form-control" name="formPassword" placeholder="password" required>
+						</div>
+				</div>
+
+				<br>
+
+				<div class="form-group form-group-inline">
+					<label for="formPaperTitle">Name of Institution:</label>
+					<input type="text" class="form-control" name="formInstitutionName" required>
+					<small class="form-text text-muted">Check list of institutions already in our database <a href="/list_institutions" target="_blank">here</a>.</small>				
+				</div>
+
+				<div class="form-group" id="institutionCampusFormGroup">
+					<label for="formPaperTitle">Campus of Institution:</label><br>
+
+					<div class="row">
+						<div class="col-8">
+							<input type="text" class="form-control" name="formInstitutionCampus" placeholder="Main" required>
+						</div>
+						<div class="col-2">
+							<button class="btn btn-info" onclick="addTooltipAfterElement('institutionCampusFormGroup', 'Put in <i>Main</i> if only one campus');">
+								?
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-4"></div>
+						<div class="col-2">
+				 			<button type="submit" class="btn btn-primary">Submit</button>
+				 		</div>
+				 	</div>
+				</div>
+			</form>
+
+			<br><br><br><br><br>
+
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">document.body.innerHTML = menuBoilerplate + document.body.innerHTML;</script>

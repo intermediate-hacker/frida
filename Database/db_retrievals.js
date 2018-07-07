@@ -26,10 +26,29 @@ const retrieveFiveRecentPapers = async () => {
 	}
 };
 
+/** Retrieves all records in the institution database
+  * @returns {list} A list of the records.
+  */
+const retrieveAllRegisteredInstitutions = async () => {
+	const institution = db_inserts.getPromisifiedDB('institution');
+
+	try {
+		const institutionList = await institution.listAsync({include_docs: true});
+		return institutionList;
+	} catch (err) {
+		console.log(`[database][retrieveAllRegisteredInstitutions]: ${err}`);
+	}
+};
+
 
 const testModule = async () => {
 	const list = await retrieveFiveRecentPapers();
 	list.forEach(v => console.log(v));
+};
+
+module.exports = {
+	retrieveFiveRecentPapers,
+	retrieveAllRegisteredInstitutions
 };
 
 // testModule();

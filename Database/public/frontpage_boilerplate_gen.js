@@ -3,7 +3,7 @@ const frontPageBoilerplate =
   <div class="row">
     <div class="col-sm-5">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header text-primary" style="background-color: #e3f2fd;"">
             Recent Publications
           </div>
           <div class="card-body">
@@ -13,7 +13,7 @@ const frontPageBoilerplate =
 
     <div class="col-sm-4">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header text-primary" style="background-color: #e3f2fd;"">
             Popular Publications
           </div>
           <div class="card-body">
@@ -23,7 +23,7 @@ const frontPageBoilerplate =
 
     <div class="col-sm-3">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header text-primary" style="background-color: #e3f2fd;"">
             Upcoming
           </div>
           <div class="card-body">

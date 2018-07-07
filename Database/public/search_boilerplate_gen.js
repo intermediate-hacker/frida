@@ -6,7 +6,7 @@ const searchBoilerplate = `
 	</div>
 
 	<div class="card">
-		<div class="card-header">
+		<div class="card-header text-primary" style="background-color: #e3f2fd;"">
 			Search Database
 		</div>		
 		<div class="card-body">

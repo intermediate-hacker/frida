@@ -8,23 +8,43 @@ const addAuthorBoilerplate = `
 	</div>
 
 	<div class="card">
-		<div class="card-header">
+		<div class="card-header text-primary" style="background-color: #e3f2fd;"">
 			Add Author to Database
 		</div>
 		<form>
 			<div class="form-group">
 				<label for="formUsername">Your Credentials:</label>
-				<input type="text" class="form-control" id="formUsername" placeholder="username">
-				<input type="password" class="form-control" id="formPassword" placeholder="password">
+				<input type="text" class="form-control" name="formUsername" placeholder="username">
+				<input type="password" class="form-control" name="formPassword" placeholder="password">
 			</div>
-			<div class="form-group form-group-inline">
+			<div class="form-group" id="firstNameFormGroup">
 				<label for="formPaperTitle">First Name of Author:</label>
-				<input type="text" class="form-control" id="formAuthorFirstName" placeholder="Frida">
+				<div class="row">
+					<div class="col-8">
+						<input type="text" class="form-control" name="formAuthorFirstName">
+					</div>
+
+					<div class="col-2">
+						<button class="btn btn-info" id="firstNameFormGroupInfoBtn" onclick="addTooltipAfterElement('firstNameFormGroup', 'Enter your forename');">
+							?
+						</button>
+					</div>
+				</div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" id="lastNameFormGroup">
 				<label for="formPaperTitle">Last Name of Author:</label>
-				<input type="text" class="form-control" id="formAuthorFirstName" placeholder="Kahlo">
+				<div class="row">
+					<div class="col-8">
+						<input type="text" class="form-control" name="formAuthorLastName">
+					</div>
+
+					<div class="col-2">
+						<button class="btn btn-info" id="firstNameFormGroupInfoBtn" onclick="addTooltipAfterElement('lastNameFormGroup', 'Enter your lastname');">
+							?
+						</button>					
+					</div>
+				</div>
 			</div>			
 		</form>
 	</div>
