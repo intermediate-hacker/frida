@@ -1,67 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>SWGI Database</title>
+	<title>Add Paper @ SWGI DB</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
 
-  <!-- my scripts -->
-  <script type="text/javascript" src="tooltip_helper.js"></script>
-  <script type="text/javascript" src="menu_boilerplate_gen.js"></script>
+	<!-- my scripts -->
+	<script type="text/javascript" src="tooltip_helper.js"></script>
+	<script type="text/javascript" src="menu_boilerplate_gen.js"></script>
+
+	<script type="text/javascript">
+		window.onload = () => {
+			document.getElementById('formGroupUploadFile').style.display = "none";
+			document.getElementById('formGroupUploadURL').style.display = "none";
+			document.getElementById('idFormAuthorNumber').style.display = "none";
+		};
+
+		const showUploadFileSection = () => {
+			document.getElementById('formGroupUploadFile').style.display = "block";
+			document.getElementById('formGroupUploadURL').style.display = "none";
+		};
+
+		const showUploadURLSection = () => {
+			document.getElementById('formGroupUploadFile').style.display = "none";
+			document.getElementById('formGroupUploadURL').style.display = "block";
+		};
+
+		let lastAuthorNumber = 1;
+
+		const formAddNewAuthor = () => {
+			document.getElementById('idFormAuthorNumber').value = parseInt(document.getElementById('idFormAuthorNumber').value) + 1;
+			const authorNum = document.getElementById('idFormAuthorNumber').value;
+			const newAuthorDataList = document.getElementById('idFormAuthorList1').cloneNode(true);
+			newAuthorDataList.id = `idFormAuthorList${authorNum}`;
+			newAuthorDataList.name = `formAuthorList${authorNum}`;
+
+			document.getElementById('authorListFormGroup').appendChild(newAuthorDataList);
+
+			const newLineElement = document.createElement('br');
+			newLineElement.setAttribute("id", `formAutomatedNewLine${authorNum}`);
+			document.getElementById('authorListFormGroup').appendChild(newLineElement);
+		};
+
+		const formRemoveAuthor = () => {
+			const authorNum = document.getElementById('idFormAuthorNumber').value;
+
+			if (authorNum > 1) {
+				document.getElementById('idFormAuthorNumber').value = parseInt(document.getElementById('idFormAuthorNumber').value) - 1;
+				const elem = document.getElementById(`idFormAuthorList${authorNum}`);
+				elem.parentNode.removeChild(elem);
+
+				const elem2 = document.getElementById(`formAutomatedNewLine${authorNum}`);
+				elem2.parentNode.removeChild(elem2);
+			}
+		};
+
+	</script>
+
+	<link rel="stylesheet" href="generic_style.css" type="text/css">
+
 </head>
 
 <body>
-	<div class="container-fluid">
-	    <div class="alert alert-info alert-dismissible fade show" role="alert">
-	    	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	    	<button class="btn btn-sm btn-outline-primary" onclick="window.open('/contribute', '_self');">Add Paper</button>
-	  		<button class="btn btn-sm btn-outline-primary" onclick="window.open('/add_author', '_self');">Add Author</button>
-	  		<button class="btn btn-sm btn-outline-primary" onclick="window.open('/add_institution', '_self');">Add Institution</button>
-		</div>
+	<div class="container-fluid fill withbgimage">
 		<div class="card">
 			<div class="card-header text-primary" style="background-color: #e3f2fd;"">
 				Add Paper to Database
 			</div>
-			<form>
+			<form action="/contribute" method="post" encType="multipart/form-data">
 				<div class="form-group">
 					<label for="formUsername">Your Credentials:</label>
-					<input type="text" class="form-control" id="formUsername" placeholder="username">
-					<input type="password" class="form-control" id="formPassword" placeholder="password">
+						<input type="text" class="form-control" name="formUsername" placeholder="username" required>
+						<input type="password" class="form-control" name="formPassword" placeholder="password" required>
 				</div>
+
 				<div class="form-group">
 					<label for="formPaperTitle">Paper Title:</label>
-					<input type="text" class="form-control" id="formPaperTitle" placeholder="A Treatise On Important Things">
+					<input type="text" class="form-control" name="formPaperTitle" placeholder="A Treatise On Important Things" required>
+				</div>
+
+				<div class="form-group">
+					<label>Publication Date:</label>
+					<input type="date" class="form-control" name="formPaperPublicationDate" required>
+				</div>
+
+				<div class="form-group" id="authorListFormGroup">
+					<label for="formInstitutionDataList">Full name of Author(s)</label>
+					<input type="text" class="form-control" id="idFormAuthorList1" name="formAuthorList1" required>
+				</div>				
+
+				<div class="form-group">
+						<input id="idFormAuthorNumber" name="formAuthorNumber" type="number" value="1">
+						<button class="btn btn-primary" type="button" onclick="formAddNewAuthor();">Add Author</button>
+						<button class="btn btn-primary" type="button" onclick="formRemoveAuthor();">Remove Author</button>
 				</div>
 
 				<div class="form-group">
 					<label>File attachment method:</label>
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="formAttachFileRadios" id="formAttachFileRadio1" value="uploadFile">
+						<input class="form-check-input" type="radio" onclick="showUploadFileSection();" name="formAttachFileRadios" id="formAttachFileRadio1" value="uploadFile">
 						<label class="form-check-label" for="formAttachFileRadio1">Upload a file</label>
 					</div>
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="formAttachFileRadios" id="formAttachFileRadio2" value="addURL">
+						<input class="form-check-input" type="radio" onclick="showUploadURLSection();" name="formAttachFileRadios" id="formAttachFileRadio2" value="addURL">
 						<label class="form-check-label" for="formAttachFileRadio2">Add a URL</label>
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" id='formGroupUploadFile'>
 					<label for="formFileToUpload">Upload File:</label>
-					<input type="file" class="form-control-file" id="formFileToUpload">
+					<input type="file" class="form-control-file" name="formFileToUpload">
+				</div>
+
+				<div class="form-group" id="formGroupUploadURL">
+					<label for="formFileURL">Enter Paper URL:</label>
+					<input type="url" class="form-control" name="formFileURL" placeholder="http://">
 				</div>
 
 				<div class="form-group">
-					<label for="formFileURL">Enter Paper URL:</label>
-					<input type="url" class="form-control" id="formFileURL" placeholder="http://">
+					<label for="formPaperCategoryName">Paper Category:</label>
+					<select name="formPaperCategoryName" class="form-control form-control-sm">
+						<option value="gender_and_human_rights">Gender and Human Rights</option>
+						<option value="gendered_violence">Gendered Violence</option>
+						<option value="gender_and_development">Gender and Development</option>
+						<option value="gender_inequalities">Gender Inequalities</option>
+						<option value="other">Other</option>
+					</select>
 				</div>
+
+				<div class="form-group">
+					<label for="formPaperKeywords">Enter search keywords (separate by comma ','):</label><br>
+					<input type="text" class="form-control" name="formPaperKeywords">
+				</div>
+
+				<div class="form-group">
+				 	<center><input type="submit" class="btn btn-primary"/></center>
+				</div>				
 			</form>
 		</div>
 	</div>
 </body>
 
-<script type="text/javascript">document.body.innerHTML = menuBoilerplate + document.body.innerHTML;</script>
+<script type="text/javascript">
+	document.body.innerHTML = menuBoilerplate + document.body.innerHTML;
+</script>
+
+</html>

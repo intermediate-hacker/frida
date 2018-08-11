@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search @ SWGI DB</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- my scripts -->
+	<script type="text/javascript" src="tooltip_helper.js"></script>
+	<script type="text/javascript" src="menu_boilerplate_gen.js"></script>
+	<script type="text/javascript" src="search_websockets.js"></script>
+
+	<link rel="stylesheet" href="generic_style.css" type="text/css">
+</head>
+
+<body>
+	<div class="container-fluid fill withsearchbgimage">
+	    <div class="alert alert-info alert-dismissible fade show" role="alert">
+	    	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  		Want more detailed results? Try: <button class="btn btn-sm btn-outline-primary" onclick="window.open('/refined_search', '_self')">Refined Search</button>
+		</div>
+
+		<div class="card slightlytranslucent">
+			<div class="card-header text-primary" style="background-color: #e3f2fd;"">
+				Search Database
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-8">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="idSearchInput">
+					</div>
+
+					<div class="col-sm-2">
+			    		<button id="idSearchButton" class="btn btn-outline-primary my-2 my-sm-0" onclick="webSocketDoSearch();">Search</button>
+			    	</div>
+			    </div>
+
+			    <div id="idSearchPapersCardBody"></div>
+		    </div>
+	    </div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	document.body.innerHTML = menuBoilerplate + document.body.innerHTML;
+
+	// Binding "Enter" key to search
+	const input = document.getElementById("idSearchInput");
+
+	input.addEventListener("keyup", event => {
+	  event.preventDefault();
+
+	  if (event.keyCode === 13) {
+	    document.getElementById("idSearchButton").click();
+	  }
+	});
+	// -- end --
+
+	webSocketSearchRequests();
+</script>
+
+</html>

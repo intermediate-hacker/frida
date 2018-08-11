@@ -27,11 +27,20 @@ const validateForm = (req, res) => {
   */
 const handlerAddAuthor = async (req, res) => {
 	if (credentials.validateCredentials(req.body.formUsername, req.body.formPassword) && validateForm(req, res)) {
-		const authorID = await dbInserts.insertAuthor(req.body.formAuthorFirstName, req.body.formAuthorLastName);
-		const tempArr = req.body.formInstitutionList.split(' ');
-		const institutionID = tempArr[tempArr.length - 1];
-		await dbInserts.setInstitutionOfAuthor(authorID, institutionID);
-		res.status(201).send(`Author ${req.body.formAuthorLastName}, ${req.body.formAuthorFirstName} inserted to database. <a href="/">Back to home.</a>`);
+		try {
+			const authorID = await dbInserts.insertAuthor(req.body.formAuthorFirstName, req.body.formAuthorLastName);
+			const tempArr = req.body.formInstitutionList.split(' ');
+			const institutionID = tempArr[tempArr.length - 1];
+			await dbInserts.setInstitutionOfAuthor(authorID, institutionID);
+			res.status(201).send(`Author ${req.body.formAuthorLastName}, ${req.body.formAuthorFirstName} inserted to database. 
+									Redirecting in 5 seconds. <a href="/contribute">Redirect now.</a>
+									<meta http-equiv="refresh" content="5;url=/contribute"/>`);
+		} catch (err) {
+			console.log(`[server_form_paper][handlerAddAuthor]: ${err}`);
+			res.status(401).send(`<b>Error</b>: Could not register author.
+								Redirecting in 5 seconds. <a href="/contribute">Redirect now.</a>
+								<meta http-equiv="refresh" content="5;url=/contribute"/>`);
+		}
 	} else {
 		res.status(401).send(`Incorrect Credentials for ${req.body.formUsername}`);
 	}

@@ -1,0 +1,24 @@
+.fill { 
+    min-height: 100%;
+    height: 100%;
+}
+
+html, body {
+	height: 100%;
+}
+
+.withbgimage {
+	background-image: url("content_front_page_background.jpg");
+}
+
+.withsearchbgimage {
+	background-image: url("content_search_page_background.jpg");
+}
+
+.withconferencebgimage {
+	background-image: url("content_view_conference_background.jpg")
+}
+
+.slightlytranslucent {
+	opacity: 1;
+}

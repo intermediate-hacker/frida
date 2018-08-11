@@ -7,38 +7,43 @@ window.mobilecheck = () => {
 
 let tempMenuBoilerPlate = "";
 
-if (window.mobilecheck()) {
+if (true) {
   tempMenuBoilerplate = 
   `<div class="container-fluid">
 
     <img src="https://swgi.lums.edu.pk/sites/all/themes/swgi/logo.png">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">Gender Studies Database</a>
+    <a class="navbar-brand" href="/">Research Database Network</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarSupportedContent">  
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <button class="btn btn-primary" onclick="generateFrontPage();">Home</button>
-          </li>  	
-          <li class="nav-item">
-            <button class="btn btn-primary" onclick="generateSearchPage();">Search Database</button>
+            <button class="btn btn-primary" onclick="window.open('/search', '_self');">Search Database</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-primary">View Conferences</button>
+            <button class="btn btn-primary" onclick="window.open('/view_conferences', '_self');">View Conferences</button>
           </li>
-          <li class="nav-item">
-            <button class="btn btn-primary" onclick="window.open('/contribute', '_self');">Contribute</button>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="navbardrop" data-toggle="dropdown">
+              Contribute
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item text-primary" href="/contribute">Add Paper</a>
+              <a class="dropdown-item text-primary" href="/add_conference">Add Conference</a>
+              <a class="dropdown-item text-primary" href="/remove_paper">Remove Paper</a>
+              <a class="dropdown-item text-primary" href="/remove_conference">Remove Conference</a>
+            </div>
           </li>
         </ul>
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <button class="btn btn-primary" onclick="generateAboutPage();">About</button>
+            <button class="btn btn-primary" onclick="window.open('/about', '_self');">About</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-primary">Contact Us</button>
+            <button class="btn btn-primary" onclick="window.open('/contact', '_self');"">Contact Us</button>
           </li>
         </ul>
       </div>
@@ -52,7 +57,7 @@ if (window.mobilecheck()) {
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">  
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <button class="btn btn-outline-primary" onclick="generateFrontPage();">Home</button>
+            <button class="btn btn-outline-primary" onclick="window.open('/', '_self');">Home</button>
           </li>   
           <li class="nav-item">
             <button class="btn btn-outline-primary" onclick="generateSearchPage();">Search Database</button>
@@ -66,7 +71,7 @@ if (window.mobilecheck()) {
         </ul>
       </div>
       <div class="mx-auto order-0">
-        <a class="navbar-brand mx-auto" href="#">Gender Studies Database</a>
+        <a class="navbar-brand mx-auto" href="#">Gender Studies Research Database Network (RDN)</a>
       </div>
       <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">

@@ -13,7 +13,7 @@ const fs = require('fs');
 const https = require('https');
 
 const serverForm = require('./server_form');
-const serverDatabaseBrowse = require('./server_db_browse');
+// const serverDatabaseBrowse = require('./server_db_browse');
 const serverRoute = require('./server_route');
 const serverWebSockets = require('./server_web_sockets');
 
@@ -28,14 +28,12 @@ const initializeServer = async () => {
 	console.log("Routing pages");
 	serverRoute.serverRoutePages(expressApp);
 
-
-
 	try {
 		console.log("Adding Form Listeners");
 		await serverForm.serverAddFormListeners(expressApp);
 
-		console.log("Adding database browsing handlers");		
-		await serverDatabaseBrowse.serverAddDatabaseBrowseListeners(expressApp);
+		// console.log("Adding database browsing handlers");		
+		// await serverDatabaseBrowse.serverAddDatabaseBrowseListeners(expressApp);
 
 		console.log("Adding web socket handlers");
 		await serverWebSockets.serverAddWebSocketHandlers(httpServer);

@@ -5,9 +5,10 @@
   */
 
 const bodyParser = require("body-parser");
+const expressFileUpload = require('express-fileupload');
 
-const institution = require('./server_form_institution');
-const author = require('./server_form_author');
+const paper = require('./server_form_paper');
+const conference = require('./server_form_conference');
 
 /** Adds form submission handlers to the server
   * @param {object} expressApp the object associated with the ExpressJS 4.0x server
@@ -15,9 +16,10 @@ const author = require('./server_form_author');
 const serverAddFormListeners = async expressApp => {
 	expressApp.use(bodyParser.urlencoded({ extended: false }));
 	expressApp.use(bodyParser.json());
+	expressApp.use(expressFileUpload());
 
-	expressApp.post('/add_institution', async (req, res) => await institution.handlerAddInstitution(req, res));
-	expressApp.post('/add_author', async (req, res) => await author.handlerAddAuthor(req, res));
+	expressApp.post('/contribute', async (req, res) => await paper.handlerAddPaper(req, res));
+	expressApp.post('/add_conference', async (req, res) => await conference.handlerAddConference(req, res));
 };
 
 module.exports = { serverAddFormListeners };

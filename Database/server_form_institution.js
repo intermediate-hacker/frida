@@ -24,8 +24,17 @@ const validateForm = (req, res) => {
   */
 const handlerAddInstitution = async (req, res) => {
 	if (credentials.validateCredentials(req.body.formUsername, req.body.formPassword) && validateForm(req, res)) {
-		await dbInserts.insertInstitution(req.body.formInstitutionName, req.body.formInstitutionCampus);
-		res.status(201).send(`Institution ${req.body.formInstitutionName} inserted. <a href="/">Back to home.</a>`);
+		try {
+			await dbInserts.insertInstitution(req.body.formInstitutionName, req.body.formInstitutionCampus);
+			res.status(201).send(`Institution ${req.body.formInstitutionName} inserted. 
+							Redirecting in 5 seconds. <a href="/contribute">Redirect now.</a>
+							<meta http-equiv="refresh" content="5;url=/contribute"/>`);
+		} catch (err) {
+			console.log(`[server_form_paper][handlerAddInstitution]: ${err}`);
+			res.status(401).send(`<b>Error</b>: Could not register institution.
+								Redirecting in 5 seconds. <a href="/contribute">Redirect now.</a>
+								<meta http-equiv="refresh" content="5;url=/contribute"/>`);			
+		}
 	} else {
 		res.status(401).send(`Incorrect Credentials for ${req.body.formUsername}`);
 	}

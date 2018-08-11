@@ -10,28 +10,42 @@ const crypto = require('crypto');
 
 bluebird.promisifyAll(nano.db);
 
+
+/** @param {string} dbName The name of a database
+  * @returns {object} A promisified version of the database (via bluebird)
+  */
 const getPromisifiedDB = (dbName) => {
 	const db = nano.db.use(dbName);
 	bluebird.promisifyAll(db);
 	return db;
 };
 
-const destroyDatabases = async () => {
-	await nano.db.destroyAsync('author');
-	await nano.db.destroyAsync('institution');
-	await nano.db.destroyAsync('paper');
-}
 
+/** Destroys 4 databases: author, institution, paper, and conference.
+  */
+const destroyDatabases = async () => {
+	await nano.db.destroyAsync('paper');
+	await nano.db.destroyAsync('conference');
+};
+
+/** Creates 4 databases: author, institution, paper, and conference.
+  */
 const createDatabases = async () => {
-	await nano.db.createAsync('author');
-	await nano.db.createAsync('institution');
+	// await nano.db.createAsync('author');
+	// await nano.db.createAsync('institution');
 	await nano.db.createAsync('paper');
+	await nano.db.createAsync('conference');
 
 	const paper = getPromisifiedDB('paper');
 	await paper.insertAsync({
 		queue : []
 	}, 'recent');
-}
+
+	const conference = getPromisifiedDB('conference');
+	await conference.insertAsync({
+		queue : []
+	}, 'recent');
+};
 
 const recreateDatabases = async () => {
 	try {
@@ -40,91 +54,30 @@ const recreateDatabases = async () => {
 	} catch (err) {
 		console.log(`[database][recreateDatabases]: ${err}`);
 	}
-}
-
-/**
-  * Adds a new author to the database.
-  * @param {string} firstName The first name of the author.
-  * @param {string} lastName The last name of the author.
-  * @returns {string} identifier of the database record.
-  */
-const insertAuthor = async (firstName, lastName) => {
-	const author = getPromisifiedDB('author');
-
-	const sha1Hash = crypto.createHash('sha1').update(`${firstName}${lastName}`).digest('hex');
-
-	try {
-		const body = await author.insertAsync({ firstName : firstName, lastName : lastName }, sha1Hash);
-		console.log(`[database][author.insert] ${sha1Hash} inserted:`);
-		console.log(body);
-		return sha1Hash;
-	} catch (err) {
-		console.log(`[database][author.insert]: ${err.message}`);
-	}
-};
-
-/** 
-  * Sets the institution of an (existing) author.
-  * @param {string} authorID The identifier for the author (in the DB).
-  * @param {string} institutionID The identifier for the institution (in the DB).
-  */
-const setInstitutionOfAuthor = async (authorID, institutionID) => {
-	const author = getPromisifiedDB('author');
-	const institution = getPromisifiedDB('institution');
-
-	try {
-		const authorDoc = await author.getAsync(authorID);
-		const institutionDoc = await institution.getAsync(institutionID);
-
-		authorDoc['institutionID'] = institutionID;
-
-		const authorDocInserted = await author.insertAsync(authorDoc);
-		console.log(`[database][setInstitutionOfAuthor]: ${authorDoc}`);
-
-	} catch (err) {
-		console.log(`[database][setInstitutionOfAuthor]: ${err}`);
-	}
-}
-
-/**
-  * Adds a new institution to the database.
-  * @param {string} name The name of the institution.
-  * @param {string} campus The location of the institution's campus being added.
-  * @returns {string} identifier of the database record.
-  */
-const insertInstitution = async (name, campus) => {
-	const institution = getPromisifiedDB('institution');
-
-	const sha1Hash = crypto.createHash('sha1').update(`${name}${campus}`).digest('hex');
-
-	try {
-		const body = await institution.insertAsync({ name: name, campus: campus }, sha1Hash);
-		console.log(`[database][institution.insert] ${sha1Hash} inserted`);
-		console.log(body);
-		return sha1Hash;
-	} catch (err) {
-		console.log(`[database][institution.insert]: ${err.message}`);
-	}
 };
 
 /**
   * Adds a new paper to the database.
   * @param {string} title The title of the paper.
   * @param {string} url of the paper.
-  * @param {string} authorID identifier (in DB) of the paper's author.
+  * @param {string} authorIDList list of identifiers (in DB) of the paper's authors.
   * @param {Date} publicationDate the date on which the paper was published (in a journal etc.).
+  * @param {List} keywords list of keywords (strings) to be used when searching for your paper.
+  * @returns {string} identifier of the database record.
   */
-const insertPaper = async (title, url, authorID, publicationDate) => {
+const insertPaper = async (title, url, authorNameList, publicationDate, categoryName, keywords) => {
 	const paper = getPromisifiedDB('paper');
 
-	const sha1Hash = crypto.createHash('sha1').update(`${title}${url}${authorID}`).digest('hex');
+	const sha1Hash = crypto.createHash('sha1').update(`${title}${url}${authorNameList}`).digest('hex');
 
 	try {
 		const body = await paper.insertAsync({ 
 			title: title, 
 			url: url, 
-			authorID: authorID, 
-			publicationDate: publicationDate.toString()
+			authorNameList: authorNameList, 
+			publicationDate: publicationDate.toString(),
+			categoryName : categoryName,
+			keywords: keywords
 		}, sha1Hash);
 
 		console.log(`[database][insertPaper]: ${sha1Hash} inserted`);
@@ -141,26 +94,57 @@ const insertPaper = async (title, url, authorID, publicationDate) => {
 		return sha1Hash;
 	} catch (err) {
 		console.log(`[database][insertPaper]: ${err.message}`);
+		throw new Error();
+	}
+};
+
+/**
+  * Adds a new conference to the database.
+  * @param {string} title The title of the paper.
+  * @param {Date} date the date the conference will be held.
+  * @param {string} venue The place the conference will be held.
+  * @param {string} notes Any notes on the conference.
+  * @returns {string} identifier of the database record.
+  */
+const insertConference = async (title, date, venue, notes) => {
+	const conference = getPromisifiedDB('conference');
+	let dateString = date.toString();
+	const sha1Hash = crypto.createHash('sha1').update(`${title}${venue}${dateString}`).digest('hex');
+
+	try {
+		const body = await conference.insertAsync({
+			title: title,
+			date: dateString,
+			venue: venue,
+			notes: notes
+		}, sha1Hash);
+
+		console.log(`[database][insertConference]: ${sha1Hash} inserted`);
+
+		const recentConferencesDoc = await conference.getAsync('recent');
+		recentConferencesDoc['queue'].push(sha1Hash);
+
+		if (recentConferencesDoc['queue'].length > 5) {
+			recentConferencesDoc['queue'].splice(0, 1);
+		}
+
+		await conference.insertAsync(recentConferencesDoc);		
+
+		return sha1Hash;
+	} catch (err) {
+		console.log(`[database][insertConference]: ${err.message}`);
+		throw new Error();
 	}
 };
 
 const mainFunc = async () => {
 	await recreateDatabases();
-	const institutionID = await insertInstitution('Harvard', 'Main');
-	// insertInstitution('University of California', 'Los Angeles');
-
-	const authorID = await insertAuthor('Judith', 'Butler');
-	await setInstitutionOfAuthor(authorID, institutionID);
-
-	const paperID = await insertPaper('Frames of War: When is life grievable?', 'https://www.versobooks.com/books/2148-frames-of-war', authorID, new Date(2009, 1, 1, 1, 1, 1, 1));
-}
+};
 
 module.exports = { 
 	getPromisifiedDB,
-	insertAuthor,
-	setInstitutionOfAuthor,
-	insertInstitution,
-	insertPaper
+	insertPaper,
+	insertConference
 };
 
 // mainFunc();

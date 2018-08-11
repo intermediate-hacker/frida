@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add Conference @ SWGI DB</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- my scripts -->
+	<script type="text/javascript" src="tooltip_helper.js"></script>
+	<script type="text/javascript" src="menu_boilerplate_gen.js"></script>
+
+	<link rel="stylesheet" href="generic_style.css" type="text/css">
+</head>
+
+<body>
+	<div class="container-fluid fill withsearchbgimage">
+		<div class="card slightlytranslucent">
+			<div class="card-header text-primary" style="background-color: #e3f2fd;"">
+				Add Conference to Database
+			</div>
+			<form action="/add_conference" method="post" encType="multipart/form-data">
+				<div class="form-group">
+					<label for="formUsername">Your Credentials:</label>
+						<input type="text" class="form-control" name="formUsername" placeholder="username" required>
+						<input type="password" class="form-control" name="formPassword" placeholder="password" required>
+				</div>
+
+				<div class="form-group">
+					<label for="formConferenceTitle">Conference Title:</label>
+					<input type="text" class="form-control" name="formConferenceTitle" placeholder="Proceedings of XYZ" required>
+				</div>
+
+				<div class="form-group">
+					<label for="formConferenceVenue">Venue:</label><br>
+					<textarea class="form-control" rows="4" cols="50" name="formConferenceVenue">
+Address Line 1,
+Address Line 2,
+City, Province, Country</textarea>				
+				</div>
+
+				<div class="form-group">
+					<label>Start Date:</label>
+					<input type="date" class="form-control" name="formConferenceDate" required>
+				</div>
+
+				<div class="form-group">
+					<label>Notes (optional):</label><br>
+					<textarea class="form-control" rows="4" cols="50" name="formConferenceNotes"></textarea>
+				</div>
+
+				<div class="form-group">
+				 	<center><input type="submit" class="btn btn-primary"/></center>
+				</div>				
+			</form>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	document.body.innerHTML = menuBoilerplate + document.body.innerHTML;
+</script>
+
+</html>
