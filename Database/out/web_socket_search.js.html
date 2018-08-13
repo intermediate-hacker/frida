@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: web_socket_add_author.js</title>
+    <title>JSDoc: Source: web_socket_search.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: web_socket_add_author.js</h1>
+    <h1 class="page-title">Source: web_socket_search.js</h1>
 
     
 
@@ -27,29 +27,30 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/** @file Server side code for handling
-  * web socket requests sent by the add author form.
+  * web socket requests sent by the search page.
   * @author Muhammad Tirmazi
   */
 
-const dbRetrievals = require('./db_retrievals');
+const dbSearch = require('./db_search');
 
-/** Handles websocket requests sent by the add author form
-  * including 1) request to get institution list
+/** Handles websocket requests sent by the front
+  * including 1) request to get the most recent papers
   * @param {object} webSocket The socket.io websocket object associated with the express 4.0x server
   */
-const handleAddAuthorWebSockets = async webSocket => {
-	webSocket.on('msgAddAuthorInstitutionListRequest', async msg => {
+const handleSearchWebSockets = async webSocket => {
+	webSocket.on('msgSearchBasicRequest', async msg => {
 		try {
-			const institutionList = await dbRetrievals.retrieveAllRegisteredInstitutions();
-			webSocket.emit('msgAddAuthorInstitutionListResponse', institutionList);
+			const paperList = await dbSearch.searchBasic(msg);
+			webSocket.emit('msgSearchBasicResponse', paperList);
 		} catch (err) {
-			console.log(`[WebSockets][handleAddAuthorWebSockets]: ${err}`);
+			console.log(`[WebSockets][handleSearchWebSockets]: ${err}`);
+			throw err;
 		}
 	});
 };
 
 module.exports = {
-	handleAddAuthorWebSockets
+	handleSearchWebSockets
 };
 
 </code></pre>

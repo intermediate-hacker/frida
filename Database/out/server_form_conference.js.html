@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: server_db_browse.js</title>
+    <title>JSDoc: Source: server_form_conference.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: server_db_browse.js</h1>
+    <h1 class="page-title">Source: server_form_conference.js</h1>
 
     
 
@@ -26,89 +26,57 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** @file Server side code for browsing
-  * the Couch-DB databases we set up and their current state.
+            <pre class="prettyprint source linenums"><code>/** @file Server side code form Conference related forms.
+  * Used by server_form.js.
   * @author Muhammad Tirmazi
   */
 
-const dbRetrievals = require('./db_retrievals');
+const dbInserts = require('./db_inserts');
+const credentials = require('./credentials');
 
-// const styleHeadHtml = `
-// 		&lt;head>
-// 			&lt;style>
-// 				table {
-// 				    font-family: arial, sans-serif;
-// 				    border-collapse: collapse;
-// 				    width: 100%;
-// 				}
+const validateForm = (req, res) => {
+	if (req.body.formConferenceTitle.length === 0) {
+		res.status(400).send(`You need to put in a conference title! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;
+	} else if (req.body.formConferenceVenue.length === 0) {
+		res.status(400).send(`You need to put in a conference venue! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;
+	} else if (req.body.formConferenceDate === undefined) {
+		res.status(400).send(`You need to put in a starting date! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;	
+	} else {
+		return true;
+	}
+};
 
-// 				td, th {
-// 				    border: 1px solid #dddddd;
-// 				    text-align: left;
-// 				    padding: 8px;
-// 				}
-
-// 				tr:nth-child(even) {
-// 				    background-color: #dddddd;
-// 				}
-// 			&lt;/style>
-// 		&lt;/head>`;
-
-/** Handles client request to view all registered authors.
-  * Generates a page listing them all and sends that as a response.
+/** Callback for handling submission of the "Add new conference" form.
   * @param {object} req An ExpressJS 4.0x request
   * @param {object} res An ExpressJS 4.0x response
   */
-// const serverGenerateAllAuthorsPage = async (req, res) => {
-// 	const authorList = await dbRetrievals.retreiveAllRegisteredAuthorsWithInstitutions();
+const handlerAddConference = async (req, res) => {
+	if (credentials.validateCredentials(req.body.formUsername, req.body.formPassword) &amp;&amp; validateForm(req, res)) {
+		try {
+			const conferenceID = await dbInserts.insertConference(req.body.formConferenceTitle, 
+																	new Date(req.body.formConferenceDate),
+																	req.body.formConferenceVenue,
+																	req.body.formConferenceNotes);
+			res.status(201).send(`
+				Conference ${req.body.formConferenceTitle} inserted to database. 
+				Redirecting in 5 seconds. &lt;a href="/contribute">Redirect now.&lt;/a>
+				&lt;meta http-equiv="refresh" content="5;url=/add_conference"/>`);
+		} catch (err) {
+			console.log(`[server_form_conference][handlerAddConference]: ${err}`);
+			res.status(401).send(`&lt;b>Error&lt;/b>: Could not register conference.
+					Redirecting in 5 seconds. &lt;a href="/contribute">Redirect now.&lt;/a>
+					&lt;meta http-equiv="refresh" content="5;url=/contribute"/>`);
+		}
 
-// 	let responseString = styleHeadHtml + `
-// 	&lt;body>
-// 	&lt;h3>Registered Authors&lt;/h3>`;
-// };
+	} else {
+		res.status(401).send(`Incorrect Credentials for ${req.body.formUsername}`);
+	}
+};
 
-/** Handles client request to view all registered institutions.
-  * Generates a page listing them all and sends that as a response.
-  * @param {object} req An ExpressJS 4.0x request
-  * @param {object} res An ExpressJS 4.0x response
-  */
-// const serverGenerateAllInstitutionsPage = async (req, res) => {
-// 	const institutionList = await dbRetrievals.retrieveAllRegisteredInstitutions();
-
-// 	let responseString = styleHeadHtml + `
-// 		&lt;body>
-// 		&lt;h3>Registered Institutions&lt;/h3>		
-// 		&lt;small>&lt;a href="/">Home&lt;/a> : &lt;a href="javascript:window.close();">Close window&lt;/a>&lt;/small>
-// 		&lt;br>
-// 		&lt;table>
-// 		&lt;tr>&lt;th>Name&lt;/th>&lt;th>Campus&lt;/th>&lt;th>Registration ID&lt;/th>&lt;/tr>`;
-
-// 	let num = 0;
-// 	institutionList.rows.forEach(v => {
-// 		num += 1;
-// 		responseString += `&lt;tr>&lt;td>${v.doc.name}&lt;/td>&lt;td>${v.doc.campus}&lt;/td>
-// 			&lt;td>&lt;input id="idInput${num}" type="text" value="${v.id}">
-// 			&lt;button onclick="let x = document.getElementById('idInput${num}'); x.select(); document.execCommand('copy');alert('Copied ID for ${v.doc.name}');">Copy&lt;/button>
-// 			&lt;/td>&lt;/tr>`;
-// 	});
-
-// 	responseString += '&lt;/table>&lt;small>&lt;a href="/">Home&lt;/a> : &lt;a href="javascript:window.close();">Close window&lt;/a>&lt;/small>&lt;/body>';
-
-// 	res.status(200).send(responseString);
-// };
-
-/** Adds database browsing handlers to the server
-  * @param {object} expressApp the object associated with the ExpressJS 4.0x server
-  */
-// const serverAddDatabaseBrowseListeners = async expressApp => {
-// 	expressApp.get('/list_institutions', (req, res) => {
-// 		res.sendFile()
-// 	});
-// };
-
-// module.exports = {
-// 	serverAddDatabaseBrowseListeners
-// };</code></pre>
+module.exports = { handlerAddConference };</code></pre>
         </article>
     </section>
 

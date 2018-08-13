@@ -29,6 +29,24 @@ const removePaperWithReferenceID = async id => {
 	}
 };
 
+const removeConferenceWithReferenceID = async id => {
+	const conference = db_inserts.getPromisifiedDB('conference');
+
+	try {
+		const conferenceRecord = await conference.getAsync(id);
+		await conference.destroy(conferenceRecord._id, conferenceRecord._rev);
+
+		const recentConferencesDoc = await conference.getAsync('recent');
+		recentConferencesDoc['queue'] = underscore.filter(recentConferencesDoc['queue'], v => (v !== id));
+		await conference.insertAsync(recentConferencesDoc);
+
+	} catch (err) {
+		console.log(`[database][removeConferenceWithReferenceID]: ${err}`);
+		throw err;
+	}
+};
+
 module.exports = {
-	removePaperWithReferenceID
+	removePaperWithReferenceID,
+	removeConferenceWithReferenceID
 };

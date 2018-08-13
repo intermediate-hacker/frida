@@ -37,11 +37,21 @@ const webSocketRemovePaperConnect = () => {
 		document.getElementById('idRemovePaperCardBody').innerHTML = `
 		<center><h6 class="text-failure">Could not remove paper!</h6></center>`;
 	});
+
+	webSocket.on('msgRemovePaperRemoveIncorrectCredentials', v => {
+		document.getElementById('idRemovePaperCardBody').innerHTML = `
+		<center><h6 class="text-failure">Could not remove paper! Incorrect Credentials.</h6></center>`;
+	});
 };
 
 const webSocketRemovePaperRemove = () => {
 	document.getElementById('idRemovePaperButton').disabled = true;		
-	webSocket.emit('msgRemovePaperRemoveRequest', { id: paperToRemove });
+	webSocket.emit('msgRemovePaperRemoveRequest', 
+		{
+			id: paperToRemove,
+			username: document.getElementById('idUsernameInput').value.trim(),
+		  	password: document.getElementById('idPasswordInput').value.trim()
+		});
 }
 
 /** Sends web socket requests by the remove paper page
@@ -49,5 +59,8 @@ const webSocketRemovePaperRemove = () => {
   */
 const webSocketRemovePaperFind = () => {
 	document.getElementById('idRemovePaperButton').disabled = true;	
-	webSocket.emit('msgRemovePaperFindRequest', { id: document.getElementById('idReferenceNumberInput').value.trim() });
+	webSocket.emit('msgRemovePaperFindRequest', 
+		{ 
+			id: document.getElementById('idReferenceNumberInput').value.trim(),
+		});
 };

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: web_socket_add_author.js</title>
+    <title>JSDoc: Source: web_socket_remove_conference.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: web_socket_add_author.js</h1>
+    <h1 class="page-title">Source: web_socket_remove_conference.js</h1>
 
     
 
@@ -27,29 +27,48 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/** @file Server side code for handling
-  * web socket requests sent by the add author form.
+  * web socket requests sent by the remove conference page.
   * @author Muhammad Tirmazi
   */
 
 const dbRetrievals = require('./db_retrievals');
+const dbRemovals = require('./db_removals')
+const credentials = require('./credentials');
 
-/** Handles websocket requests sent by the add author form
-  * including 1) request to get institution list
+/** Handles websocket requests sent by the remove conference
+  * page. 
   * @param {object} webSocket The socket.io websocket object associated with the express 4.0x server
   */
-const handleAddAuthorWebSockets = async webSocket => {
-	webSocket.on('msgAddAuthorInstitutionListRequest', async msg => {
+const handleRemoveConferenceWebSockets = async webSocket => {
+	webSocket.on('msgRemoveConferenceFindRequest', async msg => {
 		try {
-			const institutionList = await dbRetrievals.retrieveAllRegisteredInstitutions();
-			webSocket.emit('msgAddAuthorInstitutionListResponse', institutionList);
+			const conferenceRecord = await dbRetrievals.retrieveConferenceWithReferenceID(msg.id);
+			webSocket.emit('msgRemoveConferenceFindResponse', conferenceRecord);
 		} catch (err) {
-			console.log(`[WebSockets][handleAddAuthorWebSockets]: ${err}`);
+			webSocket.emit('msgRemoveConferenceFindError', {});
+			console.log(`[WebSockets][handleRemoveConferenceWebSockets]: ${err}`);
+			throw err;
+		}
+	});
+
+	webSocket.on('msgRemoveConferenceRemoveRequest', async msg => {
+		try {
+			if (credentials.validateCredentials(msg.username, msg.password)) {
+				await dbRemovals.removeConferenceWithReferenceID(msg.id);
+				webSocket.emit('msgRemoveConferenceRemoveResponse', {});
+			} else {
+				webSocket.emit('msgRemoveConferenceRemoveIncorrectCredentials', {});				
+			}
+		} catch (err) {
+			webSocket.emit('msgRemoveConferenceRemoveError', {});
+			console.log(`[WebSockets][handleRemoveConferenceWebSockets]: ${err}`);
+			throw err;
 		}
 	});
 };
 
 module.exports = {
-	handleAddAuthorWebSockets
+	handleRemoveConferenceWebSockets
 };
 
 </code></pre>

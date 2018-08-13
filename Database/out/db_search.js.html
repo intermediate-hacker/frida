@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: web_socket_add_author.js</title>
+    <title>JSDoc: Source: db_search.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: web_socket_add_author.js</h1>
+    <h1 class="page-title">Source: db_search.js</h1>
 
     
 
@@ -26,33 +26,66 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** @file Server side code for handling
-  * web socket requests sent by the add author form.
+            <pre class="prettyprint source linenums"><code>/** @file All database search functions.
+  * The database management system I am using is Apache CouchDB,
+  * with the nano module as its NodeJS client.
   * @author Muhammad Tirmazi
   */
 
-const dbRetrievals = require('./db_retrievals');
+const nano = require('nano')('http://tirmazi:tirmazi@localhost:5984');
+const bluebird = require('bluebird');
+const underscore = require('underscore');
 
-/** Handles websocket requests sent by the add author form
-  * including 1) request to get institution list
-  * @param {object} webSocket The socket.io websocket object associated with the express 4.0x server
+bluebird.promisifyAll(nano.db);
+
+const db_inserts = require('./db_inserts');
+
+/** Simple keyword intersection search function
+  * @param {string} searchTerm the search term (possibly entered by a user)
+  * @returns {list} list of papers sorted in descending order in terms of relevance to search term
   */
-const handleAddAuthorWebSockets = async webSocket => {
-	webSocket.on('msgAddAuthorInstitutionListRequest', async msg => {
-		try {
-			const institutionList = await dbRetrievals.retrieveAllRegisteredInstitutions();
-			webSocket.emit('msgAddAuthorInstitutionListResponse', institutionList);
-		} catch (err) {
-			console.log(`[WebSockets][handleAddAuthorWebSockets]: ${err}`);
-		}
-	});
+const searchBasic = async searchTerm => {
+	try {
+		let keywords = searchTerm.split(' ');
+		keywords = keywords.map(v => v.trim().toUpperCase());
+
+		const paperDB = db_inserts.getPromisifiedDB('paper');
+		const paperList = await paperDB.listAsync({include_docs: true});
+
+		const paperListWithRank = underscore.filter(paperList.rows, v => v.id !== 'recent').map(v => {
+			console.log(v.doc.keywords);
+			console.log(keywords);
+			v.rank = underscore.intersection(v.doc.keywords, keywords).length;
+			return v;
+		}).filter(v => (v.rank > 0));
+
+		// console.log(paperListWithRank);
+
+		const paperListSorted = underscore.sortBy(paperListWithRank, v => -1 * v.rank);
+
+		// console.log(paperListSorted);
+		return paperListSorted;
+	} catch (err) {
+		console.log(`[database][searchBasic]: ${err}`);
+		throw err;
+	}
+};
+
+const searchRefined = async msg => {
+	try {
+		const paperListSorted = await searchBasic(msg.term);
+		const paperListFiltered = underscore.filter(paperListSorted, v => (msg.categoryList.includes(v.doc.categoryName)));
+		return paperListFiltered;
+	} catch (err) {
+		console.log(`[database][searchRefined]: ${err}`);
+		throw err;
+	}
 };
 
 module.exports = {
-	handleAddAuthorWebSockets
-};
-
-</code></pre>
+	searchBasic,
+	searchRefined
+};</code></pre>
         </article>
     </section>
 

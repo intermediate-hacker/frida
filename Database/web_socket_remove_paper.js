@@ -4,10 +4,11 @@
   */
 
 const dbRetrievals = require('./db_retrievals');
-const dbRemovals = require('./db_removals')
+const dbRemovals = require('./db_removals');
+const credentials = require('./credentials');
 
-/** Handles websocket requests sent by the view conferences
-  * page. For now, just a request to list all conferences in DB.
+/** Handles websocket requests sent by the remove paper
+  * page. 
   * @param {object} webSocket The socket.io websocket object associated with the express 4.0x server
   */
 const handleRemovePaperWebSockets = async webSocket => {
@@ -17,15 +18,19 @@ const handleRemovePaperWebSockets = async webSocket => {
 			webSocket.emit('msgRemovePaperFindResponse', paperRecord);
 		} catch (err) {
 			webSocket.emit('msgRemovePaperFindError', {});
-			console.log(`[WebSockets][handleViewConferenceWebSockets]: ${err}`);
+			console.log(`[WebSockets][handleRemovePaperWebSockets]: ${err}`);
 			throw err;
 		}
 	});
 
 	webSocket.on('msgRemovePaperRemoveRequest', async msg => {
 		try {
-			await dbRemovals.removePaperWithReferenceID(msg.id);
-			webSocket.emit('msgRemovePaperRemoveResponse', {});
+			if (credentials.validateCredentials(msg.username, msg.password)) {
+				await dbRemovals.removePaperWithReferenceID(msg.id);
+				webSocket.emit('msgRemovePaperRemoveResponse', {});
+			} else {
+				webSocket.emit('msgRemovePaperRemoveIncorrectCredentials', {});	
+			}
 		} catch (err) {
 			webSocket.emit('msgRemovePaperRemoveError', {});
 			console.log(`[WebSockets][handleRemovePaperWebSockets]: ${err}`);

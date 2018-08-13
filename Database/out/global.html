@@ -104,6 +104,331 @@
     
 
     
+    <h4 class="name" id="createDatabases"><span class="type-signature">(async) </span>createDatabases<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates 4 databases: author, institution, paper, and conference.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="destroyDatabases"><span class="type-signature">(async) </span>destroyDatabases<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Destroys 4 databases: author, institution, paper, and conference.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getPromisifiedDB"><span class="type-signature"></span>getPromisifiedDB<span class="signature">(dbName)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dbName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name of a database</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A promisified version of the database (via bluebird)
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="handleAddAuthorWebSockets"><span class="type-signature">(async) </span>handleAddAuthorWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
     
 
@@ -206,6 +531,141 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="web_socket_add_author.js.html">web_socket_add_author.js</a>, <a href="web_socket_add_author.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleFrontPageWebSockets"><span class="type-signature">(async) </span>handleFrontPageWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles websocket requests sent by the frontincluding 1) request to get the most recent papers
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webSocket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The socket.io websocket object associated with the express 4.0x server</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="web_socket_front_page.js.html">web_socket_front_page.js</a>, <a href="web_socket_front_page.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -397,6 +857,164 @@
     
 
     
+    <h4 class="name" id="handlerAddConference"><span class="type-signature">(async) </span>handlerAddConference<span class="signature">(req, res)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Callback for handling submission of the "Add new conference" form.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An ExpressJS 4.0x request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An ExpressJS 4.0x response</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server_form_conference.js.html">server_form_conference.js</a>, <a href="server_form_conference.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="handlerAddInstitution"><span class="type-signature">(async) </span>handlerAddInstitution<span class="signature">(req, res)</span><span class="type-signature"></span></h4>
     
 
@@ -555,6 +1173,839 @@
     
 
     
+    <h4 class="name" id="handlerAddPaper"><span class="type-signature">(async) </span>handlerAddPaper<span class="signature">(req, res)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Callback for handling submission of the "Add new author" form.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An ExpressJS 4.0x request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An ExpressJS 4.0x response</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server_form_paper.js.html">server_form_paper.js</a>, <a href="server_form_paper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleRefinedSearchWebSockets"><span class="type-signature">(async) </span>handleRefinedSearchWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles websocket requests sent by the frontincluding 1) request to get the most recent papers
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webSocket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The socket.io websocket object associated with the express 4.0x server</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="web_socket_refined_search.js.html">web_socket_refined_search.js</a>, <a href="web_socket_refined_search.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleRemoveConferenceWebSockets"><span class="type-signature">(async) </span>handleRemoveConferenceWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles websocket requests sent by the remove conferencepage.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webSocket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The socket.io websocket object associated with the express 4.0x server</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="web_socket_remove_conference.js.html">web_socket_remove_conference.js</a>, <a href="web_socket_remove_conference.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleRemovePaperWebSockets"><span class="type-signature">(async) </span>handleRemovePaperWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles websocket requests sent by the remove paperpage.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webSocket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The socket.io websocket object associated with the express 4.0x server</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="web_socket_remove_paper.js.html">web_socket_remove_paper.js</a>, <a href="web_socket_remove_paper.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleSearchWebSockets"><span class="type-signature">(async) </span>handleSearchWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles websocket requests sent by the frontincluding 1) request to get the most recent papers
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webSocket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The socket.io websocket object associated with the express 4.0x server</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="web_socket_search.js.html">web_socket_search.js</a>, <a href="web_socket_search.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleViewConferenceWebSockets"><span class="type-signature">(async) </span>handleViewConferenceWebSockets<span class="signature">(webSocket)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles websocket requests sent by the view conferencespage. For now, just a request to list all conferences in DB.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webSocket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The socket.io websocket object associated with the express 4.0x server</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="web_socket_view_conferences.js.html">web_socket_view_conferences.js</a>, <a href="web_socket_view_conferences.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="initializeServer"><span class="type-signature">(async) </span>initializeServer<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -641,7 +2092,7 @@
     
 
     
-    <h4 class="name" id="insertAuthor"><span class="type-signature">(async) </span>insertAuthor<span class="signature">(firstName, lastName)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="insertConference"><span class="type-signature">(async) </span>insertConference<span class="signature">(title, date, venue, notes)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -649,7 +2100,7 @@
 
 
 <div class="description">
-    Adds a new author to the database.
+    Adds a new conference to the database.
 </div>
 
 
@@ -685,7 +2136,7 @@
 
         <tr>
             
-                <td class="name"><code>firstName</code></td>
+                <td class="name"><code>title</code></td>
             
 
             <td class="type">
@@ -701,14 +2152,37 @@
 
             
 
-            <td class="description last">The first name of the author.</td>
+            <td class="description last">The title of the paper.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>lastName</code></td>
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the date the conference will be held.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>venue</code></td>
             
 
             <td class="type">
@@ -724,7 +2198,30 @@
 
             
 
-            <td class="description last">The last name of the author.</td>
+            <td class="description last">The place the conference will be held.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>notes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Any notes on the conference.</td>
         </tr>
 
     
@@ -765,7 +2262,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line51">line 51</a>
+        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line109">line 109</a>
     </li></ul></dd>
     
 
@@ -821,187 +2318,7 @@
     
 
     
-    <h4 class="name" id="insertInstitution"><span class="type-signature">(async) </span>insertInstitution<span class="signature">(name, campus)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Adds a new institution to the database.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The name of the institution.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>campus</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The location of the institution's campus being added.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line95">line 95</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    identifier of the database record.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="insertPaper"><span class="type-signature">(async) </span>insertPaper<span class="signature">(title, url, authorID, publicationDate)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="insertPaper"><span class="type-signature">(async) </span>insertPaper<span class="signature">(title, url, authorIDList, publicationDate, keywords)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -1091,7 +2408,7 @@
 
         <tr>
             
-                <td class="name"><code>authorID</code></td>
+                <td class="name"><code>authorIDList</code></td>
             
 
             <td class="type">
@@ -1107,7 +2424,7 @@
 
             
 
-            <td class="description last">identifier (in DB) of the paper's author.</td>
+            <td class="description last">list of identifiers (in DB) of the paper's authors.</td>
         </tr>
 
     
@@ -1131,6 +2448,29 @@
             
 
             <td class="description last">the date on which the paper was published (in a journal etc.).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>keywords</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">List</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">list of keywords (strings) to be used when searching for your paper.</td>
         </tr>
 
     
@@ -1171,7 +2511,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line117">line 117</a>
+        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -1194,6 +2534,28 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    identifier of the database record.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1205,7 +2567,7 @@
     
 
     
-    <h4 class="name" id="retrieveAllRegisteredInstitutions"><span class="type-signature">(async) </span>retrieveAllRegisteredInstitutions<span class="signature">()</span><span class="type-signature"> &rarr; {list}</span></h4>
+    <h4 class="name" id="retrieveFiveRecentConferences"><span class="type-signature">(async) </span>retrieveFiveRecentConferences<span class="signature">()</span><span class="type-signature"> &rarr; {list}</span></h4>
     
 
     
@@ -1213,7 +2575,7 @@
 
 
 <div class="description">
-    Retrieves all records in the institution database
+    Retrieves the five most recently uploaded conference records (from the DB).
 </div>
 
 
@@ -1257,7 +2619,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_retrievals.js.html">db_retrievals.js</a>, <a href="db_retrievals.js.html#line32">line 32</a>
+        <a href="db_retrievals.js.html">db_retrievals.js</a>, <a href="db_retrievals.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -1284,7 +2646,7 @@
 
         
 <div class="param-desc">
-    A list of the records.
+    A list of (at most) 5 records.
 </div>
 
 
@@ -1365,7 +2727,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_retrievals.js.html">db_retrievals.js</a>, <a href="db_retrievals.js.html#line17">line 17</a>
+        <a href="db_retrievals.js.html">db_retrievals.js</a>, <a href="db_retrievals.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1421,7 +2783,7 @@
     
 
     
-    <h4 class="name" id="serverAddDatabaseBrowseListeners"><span class="type-signature">(async) </span>serverAddDatabaseBrowseListeners<span class="signature">(expressApp)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="searchBasic"><span class="type-signature">(async) </span>searchBasic<span class="signature">(searchTerm)</span><span class="type-signature"> &rarr; {list}</span></h4>
     
 
     
@@ -1429,7 +2791,7 @@
 
 
 <div class="description">
-    Adds database browsing handlers to the server
+    Simple keyword intersection search function
 </div>
 
 
@@ -1465,13 +2827,13 @@
 
         <tr>
             
-                <td class="name"><code>expressApp</code></td>
+                <td class="name"><code>searchTerm</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
             
@@ -1481,7 +2843,7 @@
 
             
 
-            <td class="description last">the object associated with the ExpressJS 4.0x server</td>
+            <td class="description last">the search term (possibly entered by a user)</td>
         </tr>
 
     
@@ -1522,7 +2884,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server_db_browse.js.html">server_db_browse.js</a>, <a href="server_db_browse.js.html#line61">line 61</a>
+        <a href="db_search.js.html">db_search.js</a>, <a href="db_search.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1545,6 +2907,28 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    list of papers sorted in descending order in terms of relevance to search term
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">list</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1657,7 +3041,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server_form.js.html">server_form.js</a>, <a href="server_form.js.html#line15">line 15</a>
+        <a href="server_form.js.html">server_form.js</a>, <a href="server_form.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -1792,7 +3176,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server_web_sockets.js.html">server_web_sockets.js</a>, <a href="server_web_sockets.js.html#line12">line 12</a>
+        <a href="server_web_sockets.js.html">server_web_sockets.js</a>, <a href="server_web_sockets.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1826,7 +3210,7 @@
     
 
     
-    <h4 class="name" id="serverGenerateAllInstitutionsPage"><span class="type-signature">(async) </span>serverGenerateAllInstitutionsPage<span class="signature">(req, res)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="serverRoutePages"><span class="type-signature"></span>serverRoutePages<span class="signature">(expressApp)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1834,7 +3218,7 @@
 
 
 <div class="description">
-    Handles client request to view all registered institutions.Generates a page listing them all and sends that as a response.
+    Adds routes to the express 4.0x serveraccording to the sitemap.
 </div>
 
 
@@ -1870,7 +3254,7 @@
 
         <tr>
             
-                <td class="name"><code>req</code></td>
+                <td class="name"><code>expressApp</code></td>
             
 
             <td class="type">
@@ -1886,30 +3270,7 @@
 
             
 
-            <td class="description last">An ExpressJS 4.0x request</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>res</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">An ExpressJS 4.0x response</td>
+            <td class="description last">The object associated with the express 4.0x server</td>
         </tr>
 
     
@@ -1950,7 +3311,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server_db_browse.js.html">server_db_browse.js</a>, <a href="server_db_browse.js.html#line13">line 13</a>
+        <a href="server_route.js.html">server_route.js</a>, <a href="server_route.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -1973,6 +3334,12 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+    
 
 
 
@@ -1984,7 +3351,7 @@
     
 
     
-    <h4 class="name" id="setInstitutionOfAuthor"><span class="type-signature">(async) </span>setInstitutionOfAuthor<span class="signature">(authorID, institutionID)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="validateCredentials"><span class="type-signature"></span>validateCredentials<span class="signature">(username, password)</span><span class="type-signature"> &rarr; {bool}</span></h4>
     
 
     
@@ -1992,7 +3359,7 @@
 
 
 <div class="description">
-    Sets the institution of an (existing) author.
+    Check if the credentials submitted in a form are accurate
 </div>
 
 
@@ -2028,7 +3395,7 @@
 
         <tr>
             
-                <td class="name"><code>authorID</code></td>
+                <td class="name"><code>username</code></td>
             
 
             <td class="type">
@@ -2044,14 +3411,14 @@
 
             
 
-            <td class="description last">The identifier for the author (in the DB).</td>
+            <td class="description last">The username submitted in the form</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>institutionID</code></td>
+                <td class="name"><code>password</code></td>
             
 
             <td class="type">
@@ -2067,7 +3434,7 @@
 
             
 
-            <td class="description last">The identifier for the institution (in the DB).</td>
+            <td class="description last">The password submitted in the form</td>
         </tr>
 
     
@@ -2108,7 +3475,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_inserts.js.html">db_inserts.js</a>, <a href="db_inserts.js.html#line71">line 71</a>
+        <a href="credentials.js.html">credentials.js</a>, <a href="credentials.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -2131,6 +3498,28 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    True if credentials are correct, false otherwise.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">bool</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -2152,13 +3541,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#handleAddAuthorWebSockets">handleAddAuthorWebSockets</a></li><li><a href="global.html#handlerAddAuthor">handlerAddAuthor</a></li><li><a href="global.html#handlerAddInstitution">handlerAddInstitution</a></li><li><a href="global.html#initializeServer">initializeServer</a></li><li><a href="global.html#insertAuthor">insertAuthor</a></li><li><a href="global.html#insertInstitution">insertInstitution</a></li><li><a href="global.html#insertPaper">insertPaper</a></li><li><a href="global.html#retrieveAllRegisteredInstitutions">retrieveAllRegisteredInstitutions</a></li><li><a href="global.html#retrieveFiveRecentPapers">retrieveFiveRecentPapers</a></li><li><a href="global.html#serverAddDatabaseBrowseListeners">serverAddDatabaseBrowseListeners</a></li><li><a href="global.html#serverAddFormListeners">serverAddFormListeners</a></li><li><a href="global.html#serverAddWebSocketHandlers">serverAddWebSocketHandlers</a></li><li><a href="global.html#serverGenerateAllInstitutionsPage">serverGenerateAllInstitutionsPage</a></li><li><a href="global.html#setInstitutionOfAuthor">setInstitutionOfAuthor</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createDatabases">createDatabases</a></li><li><a href="global.html#destroyDatabases">destroyDatabases</a></li><li><a href="global.html#getPromisifiedDB">getPromisifiedDB</a></li><li><a href="global.html#handleAddAuthorWebSockets">handleAddAuthorWebSockets</a></li><li><a href="global.html#handleFrontPageWebSockets">handleFrontPageWebSockets</a></li><li><a href="global.html#handlerAddAuthor">handlerAddAuthor</a></li><li><a href="global.html#handlerAddConference">handlerAddConference</a></li><li><a href="global.html#handlerAddInstitution">handlerAddInstitution</a></li><li><a href="global.html#handlerAddPaper">handlerAddPaper</a></li><li><a href="global.html#handleRefinedSearchWebSockets">handleRefinedSearchWebSockets</a></li><li><a href="global.html#handleRemoveConferenceWebSockets">handleRemoveConferenceWebSockets</a></li><li><a href="global.html#handleRemovePaperWebSockets">handleRemovePaperWebSockets</a></li><li><a href="global.html#handleSearchWebSockets">handleSearchWebSockets</a></li><li><a href="global.html#handleViewConferenceWebSockets">handleViewConferenceWebSockets</a></li><li><a href="global.html#initializeServer">initializeServer</a></li><li><a href="global.html#insertConference">insertConference</a></li><li><a href="global.html#insertPaper">insertPaper</a></li><li><a href="global.html#retrieveFiveRecentConferences">retrieveFiveRecentConferences</a></li><li><a href="global.html#retrieveFiveRecentPapers">retrieveFiveRecentPapers</a></li><li><a href="global.html#searchBasic">searchBasic</a></li><li><a href="global.html#serverAddFormListeners">serverAddFormListeners</a></li><li><a href="global.html#serverAddWebSocketHandlers">serverAddWebSocketHandlers</a></li><li><a href="global.html#serverRoutePages">serverRoutePages</a></li><li><a href="global.html#validateCredentials">validateCredentials</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 23:04:27 GMT+0400 (Arabian Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 13 2018 20:36:16 GMT+0400 (Arabian Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

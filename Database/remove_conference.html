@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Remove Paper @ SWGI DB</title>
+	<title>Remove Conference @ SWGI DB</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 
 	<!-- my scripts -->
 	<script type="text/javascript" src="menu_boilerplate_gen.js"></script>
-	<script type="text/javascript" src="remove_paper_websockets.js"></script>
+	<script type="text/javascript" src="remove_conference_websockets.js"></script>
 
 	<link rel="stylesheet" href="generic_style.css" type="text/css">
 </head>
@@ -21,7 +21,7 @@
 	<div class="container-fluid fill withsearchbgimage">
 		<div class="card slightlytranslucent">
 			<div class="card-header text-primary" style="background-color: #e3f2fd;"">
-				Remove Paper
+				Remove Conference
 			</div>
 			<div class="card-body">
 				<label>Enter Reference Number:</label>
@@ -30,16 +30,16 @@
 						<input class="form-control" type="text" id="idReferenceNumberInput"/>
 					</div>
 					<div class="col-sm-2">
-						<center><button class="btn btn-outline-primary my-2 my-sm-0 form" onclick="webSocketRemovePaperFind();">Find Paper</button></center>
+						<center><button class="btn btn-outline-primary my-2 my-sm-0 form" onclick="webSocketRemoveConferenceFind();">Find Conference</button></center>
 					</div>
 				</div>
 
 			    <br>
-			    <div id="idRemovePaperCardBody"><center><h6 class="text-secondary">No Paper Selected!</h6></center></div><br>
+			    <div id="idRemoveConferenceCardBody"><center><h6 class="text-secondary">No Conference Selected!</h6></center></div><br>
 			    <label>Enter credentials to remove record:</label>
 			    <input type="username" class="form-control" id="idUsernameInput" placeholder="username">
-			    <input type="password" class="form-control" id="idPasswordInput" placeholder="password"><br>
-			    <center><button class="btn btn-primary" onclick="webSocketRemovePaperRemove();" disabled="true" id="idRemovePaperButton">Remove from Database</button></center>
+			    <input type="password" class="form-control" id="idPasswordInput" placeholder="password"><br>			    
+			    <center><button class="btn btn-primary" onclick="webSocketRemoveConferenceRemove();" disabled="true" id="idRemoveConferenceButton">Remove from Database</button></center>
 		    </div>
 	    </div>
 	</div>
@@ -47,7 +47,7 @@
 
 <script type="text/javascript">
 	document.body.innerHTML = menuBoilerplate + document.body.innerHTML;
-	webSocketRemovePaperConnect();
+	webSocketRemoveConferenceConnect();
 </script>
 
 </html>

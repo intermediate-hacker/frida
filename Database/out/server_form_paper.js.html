@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: server_form_paper.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: server_form_paper.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @file Server side code form Paper related forms.
+  * Used by server_form.js.
+  * @author Muhammad Tirmazi
+  */
+
+const dbInserts = require('./db_inserts');
+const credentials = require('./credentials');
+
+const validateForm = (req, res) => {
+	if (req.body.formPaperTitle.length === 0) {
+		res.status(400).send(`You need to put in a paper title! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;
+	} else if (req.body.formPaperCategoryName.length === 0) {
+		res.status(400).send('You need to select a category! &lt;a href="/">Back to home.&lt;/a>');
+		return false;
+	} else if (req.body.formAuthorNumber.length === 0) {
+		res.status(400).send(`You need to put in an author number! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;
+	} else if (req.body.formPaperPublicationDate === undefined) {
+		res.status(400).send(`You need to put in a publication date! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;		
+	} else if (req.body.formAttachFileRadios.length === 0) {
+		res.status(400).send(`You need to put in an upload option! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;		
+	} else if (req.body.formAttachFileRadios === "addURL" &amp;&amp; req.body.formFileURL.length === 0) {
+		res.status(400).send(`You need to put in a paper URL! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;
+	} else if (req.body.formAttachFileRadios === "uploadFile" &amp;&amp; !req.files) {
+		res.status(400).send(`You need to upload a file! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;
+	// } else if (req.body.formAttachFileRadios === "addURL" &amp;&amp; req.files) {
+	// 	res.status(400).send(`Incorrect attachment method to input mapping! &lt;a href="/">Back to home.&lt;/a>`);
+		// return false;
+	} else if (req.body.formAttachFileRadios === "uploadFile" &amp;&amp; req.body.formFileURL.length !== 0) {
+		res.status(400).send(`Incorrect attachment method to input mapping! &lt;a href="/">Back to home.&lt;/a>`);
+		return false;		
+	} else {
+		return true;
+	}
+};
+
+/** Callback for handling submission of the "Add new author" form.
+  * @param {object} req An ExpressJS 4.0x request
+  * @param {object} res An ExpressJS 4.0x response
+  */
+const handlerAddPaper = async (req, res) => {
+	if (credentials.validateCredentials(req.body.formUsername, req.body.formPassword) &amp;&amp; validateForm(req, res)) {
+		try {
+			let url = req.body.formFileURL;
+
+			if (req.body.formAttachFileRadios === "uploadFile") {
+				const tmpLambda = () => new Promise((resolve, reject) => {
+					let tempFile = req.files.formFileToUpload;
+					tempFile.mv('./public/' + tempFile.name, async err => {
+						if (err) {
+							res.status(500).send(err);
+							reject();
+						} else {
+							resolve(tempFile.name);
+						}
+					});
+				});
+
+				url = await tmpLambda();
+			}
+
+			const authorTokens = [];
+			const authorNames = []
+
+			for (let i = 1; i &lt;= req.body.formAuthorNumber; i++) {
+				authorNames.push(req.body[`formAuthorList${i}`]);
+				req.body[`formAuthorList${i}`].split(' ').forEach(v => authorTokens.push(v));
+			}
+
+			let keywordList = [...req.body.formPaperTitle.split(' '), ...authorTokens];
+			
+			if (req.body.formPaperKeywords.length !== 0) {
+				keywordList = [...req.body.formPaperKeywords.split(','), ...keywordList];
+			}
+
+			keywordList = keywordList.map(v => {
+				return v.trim().toUpperCase();
+			});
+
+			const paperID = await dbInserts.insertPaper(
+				req.body.formPaperTitle, 
+				url, 
+				authorNames, 
+				new Date(req.body.formPaperPublicationDate),
+				req.body.formPaperCategoryName,
+				keywordList);
+			res.status(201).send(`
+				Paper ${req.body.formPaperTitle} inserted to database. 
+				Redirecting in 5 seconds. &lt;a href="/contribute">Redirect now.&lt;/a>
+				&lt;meta http-equiv="refresh" content="5;url=/contribute"/>`);
+		} catch (err) {
+			console.log(`[server_form_paper][handlerAddPaper]: ${err}`);
+			res.status(401).send(`&lt;b>Error&lt;/b>: Could not register paper.
+					Redirecting in 5 seconds. &lt;a href="/contribute">Redirect now.&lt;/a>
+					&lt;meta http-equiv="refresh" content="5;url=/contribute"/>`);
+		}
+
+	} else {
+		res.status(401).send(`Incorrect Credentials for ${req.body.formUsername}`);
+	}
+};
+
+module.exports = { handlerAddPaper };</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createDatabases">createDatabases</a></li><li><a href="global.html#destroyDatabases">destroyDatabases</a></li><li><a href="global.html#getPromisifiedDB">getPromisifiedDB</a></li><li><a href="global.html#handleAddAuthorWebSockets">handleAddAuthorWebSockets</a></li><li><a href="global.html#handleFrontPageWebSockets">handleFrontPageWebSockets</a></li><li><a href="global.html#handlerAddAuthor">handlerAddAuthor</a></li><li><a href="global.html#handlerAddConference">handlerAddConference</a></li><li><a href="global.html#handlerAddInstitution">handlerAddInstitution</a></li><li><a href="global.html#handlerAddPaper">handlerAddPaper</a></li><li><a href="global.html#handleRefinedSearchWebSockets">handleRefinedSearchWebSockets</a></li><li><a href="global.html#handleRemoveConferenceWebSockets">handleRemoveConferenceWebSockets</a></li><li><a href="global.html#handleRemovePaperWebSockets">handleRemovePaperWebSockets</a></li><li><a href="global.html#handleSearchWebSockets">handleSearchWebSockets</a></li><li><a href="global.html#handleViewConferenceWebSockets">handleViewConferenceWebSockets</a></li><li><a href="global.html#initializeServer">initializeServer</a></li><li><a href="global.html#insertConference">insertConference</a></li><li><a href="global.html#insertPaper">insertPaper</a></li><li><a href="global.html#retrieveFiveRecentConferences">retrieveFiveRecentConferences</a></li><li><a href="global.html#retrieveFiveRecentPapers">retrieveFiveRecentPapers</a></li><li><a href="global.html#searchBasic">searchBasic</a></li><li><a href="global.html#serverAddFormListeners">serverAddFormListeners</a></li><li><a href="global.html#serverAddWebSocketHandlers">serverAddWebSocketHandlers</a></li><li><a href="global.html#serverRoutePages">serverRoutePages</a></li><li><a href="global.html#validateCredentials">validateCredentials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 13 2018 20:36:16 GMT+0400 (Arabian Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

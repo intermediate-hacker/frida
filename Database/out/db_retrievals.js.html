@@ -34,10 +34,12 @@
 
 const nano = require('nano')('http://tirmazi:tirmazi@localhost:5984');
 const bluebird = require('bluebird');
+const underscore = require('underscore');
 
 bluebird.promisifyAll(nano.db);
 
 const db_inserts = require('./db_inserts');
+
 
 /** Retrieves the five most recently uploaded paper records (from the DB).
   * @returns {list} A list of the (at most) 5 records.
@@ -51,35 +53,72 @@ const retrieveFiveRecentPapers = async () => {
 		return recentPapersList;
 	} catch (err) {
 		console.log(`[database][retrieveFiveRecentPapers]: ${err}`);
+		throw err;
 	}
 };
 
-/** Retrieves all records in the institution database
-  * @returns {list} A list of the records.
+/** Retrieves the five most recently uploaded conference records (from the DB).
+  * @returns {list} A list of (at most) 5 records.
   */
-const retrieveAllRegisteredInstitutions = async () => {
-	const institution = db_inserts.getPromisifiedDB('institution');
+const retrieveFiveRecentConferences = async () => {
+	const conference = db_inserts.getPromisifiedDB('conference');
 
 	try {
-		const institutionList = await institution.listAsync({include_docs: true});
-		return institutionList;
+		const recentConferencesDoc = await conference.getAsync('recent');
+		const recentConferencesList = await Promise.all(recentConferencesDoc.queue.map(v => conference.getAsync(v)));
+		return recentConferencesList;
 	} catch (err) {
-		console.log(`[database][retrieveAllRegisteredInstitutions]: ${err}`);
+		console.log(`[database][retrieveFiveRecentConferences]: ${err}`);
+		throw err;
+	}
+};
+
+const retrieveAllRegisteredConferences = async () => {
+	const conference = db_inserts.getPromisifiedDB('conference');
+
+	try {
+		const conferenceList = await conference.listAsync({include_docs: true});
+		const formattedConferenceList = underscore.filter(conferenceList.rows, v => (v.id !== 'recent'));
+		return formattedConferenceList;
+	} catch(err) {
+		console.log(`[database][retrieveAllRegisteredConferences]: ${err}`);
+		throw err;
 	}
 };
 
 
-const testModule = async () => {
-	const list = await retrieveFiveRecentPapers();
-	list.forEach(v => console.log(v));
+const retrieveConferenceWithReferenceID = async id => {
+	const conference = db_inserts.getPromisifiedDB('conference');
+
+	try {
+		const conferenceRecord = await conference.getAsync(id);
+		return conferenceRecord;
+	} catch (err) {
+		console.log(`[database][retrieveConferenceWithReferenceID]: ${err}`);
+		throw err;
+	}
+};
+
+
+const retrievePaperWithReferenceID = async id => {
+	const paper = db_inserts.getPromisifiedDB('paper');
+
+	try {
+		const paperRecord = await paper.getAsync(id);
+		return paperRecord;
+	} catch (err) {
+		console.log(`[database][retrievePaperWithReferenceID]: ${err}`);
+		throw err;
+	}
 };
 
 module.exports = {
 	retrieveFiveRecentPapers,
-	retrieveAllRegisteredInstitutions
-};
-
-// testModule();</code></pre>
+	retrieveFiveRecentConferences,
+	retrieveAllRegisteredConferences,
+	retrieveConferenceWithReferenceID,
+	retrievePaperWithReferenceID
+};</code></pre>
         </article>
     </section>
 
@@ -89,13 +128,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#handleAddAuthorWebSockets">handleAddAuthorWebSockets</a></li><li><a href="global.html#handlerAddAuthor">handlerAddAuthor</a></li><li><a href="global.html#handlerAddInstitution">handlerAddInstitution</a></li><li><a href="global.html#initializeServer">initializeServer</a></li><li><a href="global.html#insertAuthor">insertAuthor</a></li><li><a href="global.html#insertInstitution">insertInstitution</a></li><li><a href="global.html#insertPaper">insertPaper</a></li><li><a href="global.html#retrieveAllRegisteredInstitutions">retrieveAllRegisteredInstitutions</a></li><li><a href="global.html#retrieveFiveRecentPapers">retrieveFiveRecentPapers</a></li><li><a href="global.html#serverAddDatabaseBrowseListeners">serverAddDatabaseBrowseListeners</a></li><li><a href="global.html#serverAddFormListeners">serverAddFormListeners</a></li><li><a href="global.html#serverAddWebSocketHandlers">serverAddWebSocketHandlers</a></li><li><a href="global.html#serverGenerateAllInstitutionsPage">serverGenerateAllInstitutionsPage</a></li><li><a href="global.html#setInstitutionOfAuthor">setInstitutionOfAuthor</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createDatabases">createDatabases</a></li><li><a href="global.html#destroyDatabases">destroyDatabases</a></li><li><a href="global.html#getPromisifiedDB">getPromisifiedDB</a></li><li><a href="global.html#handleAddAuthorWebSockets">handleAddAuthorWebSockets</a></li><li><a href="global.html#handleFrontPageWebSockets">handleFrontPageWebSockets</a></li><li><a href="global.html#handlerAddAuthor">handlerAddAuthor</a></li><li><a href="global.html#handlerAddConference">handlerAddConference</a></li><li><a href="global.html#handlerAddInstitution">handlerAddInstitution</a></li><li><a href="global.html#handlerAddPaper">handlerAddPaper</a></li><li><a href="global.html#handleRefinedSearchWebSockets">handleRefinedSearchWebSockets</a></li><li><a href="global.html#handleRemoveConferenceWebSockets">handleRemoveConferenceWebSockets</a></li><li><a href="global.html#handleRemovePaperWebSockets">handleRemovePaperWebSockets</a></li><li><a href="global.html#handleSearchWebSockets">handleSearchWebSockets</a></li><li><a href="global.html#handleViewConferenceWebSockets">handleViewConferenceWebSockets</a></li><li><a href="global.html#initializeServer">initializeServer</a></li><li><a href="global.html#insertConference">insertConference</a></li><li><a href="global.html#insertPaper">insertPaper</a></li><li><a href="global.html#retrieveFiveRecentConferences">retrieveFiveRecentConferences</a></li><li><a href="global.html#retrieveFiveRecentPapers">retrieveFiveRecentPapers</a></li><li><a href="global.html#searchBasic">searchBasic</a></li><li><a href="global.html#serverAddFormListeners">serverAddFormListeners</a></li><li><a href="global.html#serverAddWebSocketHandlers">serverAddWebSocketHandlers</a></li><li><a href="global.html#serverRoutePages">serverRoutePages</a></li><li><a href="global.html#validateCredentials">validateCredentials</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 23:04:27 GMT+0400 (Arabian Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 13 2018 20:36:16 GMT+0400 (Arabian Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
