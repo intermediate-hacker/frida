@@ -40,22 +40,6 @@ const serverRoutePages = expressApp => {
 		res.sendFile(__dirname + '/contact.html');
 	});
 
-	expressApp.get('/add_author', (req, res) => {
-		res.sendFile(__dirname + '/add_author.html');
-	});
-
-	expressApp.get('/add_institution', (req, res) => {
-		res.sendFile(__dirname + '/add_institution.html');
-	});
-
-	expressApp.get('/list_institutions', (req, res) => {
-		res.sendFile(__dirname + '/list_institutions.html');
-	});
-
-	expressApp.get('/list_authors', (req, res) => {
-		res.sendFile(__dirname + '/list_authors.html');
-	});
-
 	expressApp.get('/about', (req, res) => {
 		res.sendFile(__dirname + '/about.html');
 	});

@@ -12,6 +12,9 @@ bluebird.promisifyAll(nano.db);
 
 const db_inserts = require('./db_inserts');
 
+/** Removes a record in the paper database
+  * @param {string} id The identifier of the paper record.
+  */
 const removePaperWithReferenceID = async id => {
 	const paper = db_inserts.getPromisifiedDB('paper');
 
@@ -29,6 +32,9 @@ const removePaperWithReferenceID = async id => {
 	}
 };
 
+/** Removes a record in the conference database
+  * @param {string} id The identifier of the conference record
+  */
 const removeConferenceWithReferenceID = async id => {
 	const conference = db_inserts.getPromisifiedDB('conference');
 

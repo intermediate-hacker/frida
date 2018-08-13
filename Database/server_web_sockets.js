@@ -4,7 +4,6 @@
 
 const socketIO = require('socket.io');
 
-const addAuthor = require('./web_socket_add_author');
 const contribute = require('./web_socket_contribute');
 const frontPage = require('./web_socket_front_page');
 const search = require('./web_socket_search');
@@ -20,7 +19,6 @@ const serverAddWebSocketHandlers = async httpServer => {
 	const io = socketIO(httpServer);
 
 	io.on('connection', async webSocket => {
-		await addAuthor.handleAddAuthorWebSockets(webSocket);
 		await frontPage.handleFrontPageWebSockets(webSocket);
 		await search.handleSearchWebSockets(webSocket);
 		await refinedSearch.handleRefinedSearchWebSockets(webSocket);

@@ -43,6 +43,10 @@ const searchBasic = async searchTerm => {
 	}
 };
 
+/** Refined keyword intersection search function
+  * @param {Object} An object containing the search term "term" and a category list "categoryList"
+  * @returns {list} list of papers sorted in descending order in terms of relevance to search term
+  */
 const searchRefined = async msg => {
 	try {
 		const paperListSorted = await searchBasic(msg.term);
